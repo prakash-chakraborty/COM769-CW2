@@ -105,15 +105,16 @@
             // Initialize the star rating system
             $(".star").click(function () {
                 var rating = $(this).index() + 1; // Get the selected star's index and add 1 to get the rating value
-
+                var ratingData = {
+                        VideoID: videoId,
+                        Rating: rating
+                    };
                 // Make an API call to submit the rating
                 $.ajax({
                     url: "https://prod-18.eastus.logic.azure.com/workflows/a51367ea4fce4efcaeb89acfaff02b92/triggers/request/paths/invoke/rest/v1/ratings?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=DCUhMSj5n_KyZpTmZdzGVeC57WKMeY6YkiVJqIFfinI", // Replace with your API endpoint for rating submission
                     type: "POST",
-                    data: {
-                        VideoID: videoId,
-                        Rating: rating
-                    },
+                    data: JSON.stringify(ratingData),
+                    contentType: "application/json",
                     success: function (response) {
                         // Handle success response
                         alert("Rating submitted successfully!");
@@ -130,15 +131,16 @@
             // Handle "Submit Comment" button click
             $("#submit-comment").click(function () {
                 var comment = $("#comment-input").val();
-
+                commentData = {
+                        VideoID: videoId,
+                        Comment: comment
+                    };
                 // Make an API call to submit the comment
                 $.ajax({
                     url: "https://prod-95.eastus.logic.azure.com/workflows/b6f6b5e6834d4a86a33413c081bb26a7/triggers/manual/paths/invoke/rest/v1/comments?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svSTAc91hEFK416he45sNsBUvP1iqrBoP9X_yZfEDj0", // Replace with your API endpoint for submitting comments
                     type: "POST",
-                    data: {
-                        VideoID: videoId,
-                        Comment: comment
-                    },
+                    data: JSON.stringify(commentData),
+                    contentType: "application/json",
                     success: function (response) {
                         // Handle success response
                         alert("Comment submitted successfully!");

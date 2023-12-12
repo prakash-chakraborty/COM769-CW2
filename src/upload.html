@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,28 +8,33 @@
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-900 text-white flex justify-center items-center h-screen">
 
     <div class="max-w-md w-full p-6 rounded-lg bg-gray-800">
         <h1 class="text-2xl font-semibold mb-4">Upload a Video</h1>
-        
+
         <!-- Video Upload Form -->
         <form id="upload-form">
             <div class="mb-4">
                 <label for="video" class="block text-sm font-medium mb-2">Select Video File</label>
-                <input type="file" id="video" name="video" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" accept="video/*" required>
+                <input type="file" id="video" name="video" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white"
+                    accept="video/*" required>
             </div>
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium mb-2">Title</label>
-                <input type="text" id="title" name="title" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                <input type="text" id="title" name="title" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white"
+                    required>
             </div>
             <div class="mb-4">
                 <label for="publisher" class="block text-sm font-medium mb-2">Publisher</label>
-                <input type="text" id="publisher" name="publisher" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                <input type="text" id="publisher" name="publisher"
+                    class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
             </div>
             <div class="mb-4">
                 <label for="Producer" class="block text-sm font-medium mb-2">Producer</label>
-                <input type="text" id="producer" name="producer" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                <input type="text" id="producer" name="producer"
+                    class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
             </div>
             <div class="mb-4">
                 <label for="genre" class="block text-sm font-medium mb-2">Genre</label>
@@ -45,7 +51,8 @@
             </div>
             <div class="mb-4">
                 <label for="ageRating" class="block text-sm font-medium mb-2">Age Rating</label>
-                <select id="ageRating" name="ageRating" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                <select id="ageRating" name="ageRating" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white"
+                    required>
                     <option value="G">G - General Audiences</option>
                     <option value="PG">PG - Parental Guidance Suggested</option>
                     <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
@@ -53,17 +60,18 @@
                     <!-- Add more age ratings as needed -->
                 </select>
             </div>
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">Submit</button>
+            <button type="submit"
+                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">Submit</button>
         </form>
     </div>
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Handle file input change event
-            $("#video").change(function() {
+            $("#video").change(function () {
                 /*
                 // Get the selected file
                 var file = this.files[0];
@@ -93,7 +101,7 @@
             });
 
             // Handle form submission (optional)
-            $("#upload-form").submit(function(event) {
+            $("#upload-form").submit(function (event) {
                 // Handle other form fields if needed
                 event.preventDefault();
 
@@ -118,26 +126,23 @@
                     URL: videoUrl,
                 };
 
-                // Send the data to your API endpoint (replace 'apiEndpoint' with your actual API endpoint URL)
-                fetch('https://prod-20.eastus.logic.azure.com/workflows/12668f9e60d34a8fad2255423f70f8fa/triggers/request/paths/invoke/rest/v1/videometa?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=_RPtP4inkUcmYkd1n0TyKbL6_oGljg8kbqUWefEuxrg', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+                $.ajax({
+                    url: 'https://prod-20.eastus.logic.azure.com/workflows/12668f9e60d34a8fad2255423f70f8fa/triggers/request/paths/invoke/rest/v1/videometa?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=_RPtP4inkUcmYkd1n0TyKbL6_oGljg8kbqUWefEuxrg', // Replace with your API endpoint for rating submission
+                    type: "POST",
+                    data: JSON.stringify(videoData),
+                    contentType: "application/json",
+                    success: function (response) {
+                        console.log(response);
+                        alert("Video Uploaded");
+                        window.location.reload();
                     },
-                    body: JSON.stringify(videoData),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the API response here (e.g., show success message or error message)
-                    console.log(data);
-                    alert("Video Uploaded");
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
                 });
             });
         });
     </script>
 </body>
+
 </html>

@@ -75,9 +75,10 @@
                     contentType: "application/json",
                     success: function (response) {
                         alert("Registered with username: " + username);
-                        window.location.href = "home.html"
+                        window.location.href = "index.html"
                     },
                     error: function (error) {
+                        alert("Something went wrong");
                         console.error('Error:', error);
                     }
                 });
