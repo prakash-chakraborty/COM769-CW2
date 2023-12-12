@@ -27,8 +27,8 @@
                 <input type="text" id="publisher" name="publisher" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
             </div>
             <div class="mb-4">
-                <label for="author" class="block text-sm font-medium mb-2">Author</label>
-                <input type="text" id="author" name="author" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                <label for="Producer" class="block text-sm font-medium mb-2">Producer</label>
+                <input type="text" id="producer" name="producer" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
             </div>
             <div class="mb-4">
                 <label for="genre" class="block text-sm font-medium mb-2">Genre</label>
@@ -94,7 +94,7 @@
                 // Retrieve form data
                 const title = document.getElementById("title").value;
                 const publisher = document.getElementById("publisher").value;
-                const author = document.getElementById("author").value;
+                const producer = document.getElementById("producer").value;
                 const genre = document.getElementById("genre").value;
                 const ageRating = document.getElementById("ageRating").value;
 
@@ -106,7 +106,7 @@
                 const videoData = {
                     title: title,
                     publisher: publisher,
-                    author: author,
+                    producer: producer,
                     genre: genre,
                     ageRating: ageRating,
                     videoUrl: videoUrl,

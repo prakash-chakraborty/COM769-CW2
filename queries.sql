@@ -1,0 +1,31 @@
+CREATE TABLE users (
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(50) NOT NULL,
+    Password NVARCHAR(100) NOT NULL,
+    UserType NVARCHAR(20) DEFAULT 'user'
+);
+
+CREATE TABLE videometa (
+    VideoID INT IDENTITY(1,1) PRIMARY KEY,
+    Title NVARCHAR(100) NOT NULL,
+    Publisher NVARCHAR(100) NOT NULL,
+    Producer NVARCHAR(100) NOT NULL,
+    Genre NVARCHAR(100) NOT NULL,
+    AgeRating NVARCHAR(100) NOT NULL,
+    URL NVARCHAR(200) NOT NULL,
+    UploadTime DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Ratings (
+    RatingID INT IDENTITY(1,1) PRIMARY KEY,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5) NOT NULL,
+    VideoID INT,
+    FOREIGN KEY (VideoID) REFERENCES videometa(VideoID)
+);
+
+CREATE TABLE Comments (
+    CommentID INT IDENTITY(1,1) PRIMARY KEY,
+    CommentText NVARCHAR(MAX) NOT NULL,
+    VideoID INT,
+    FOREIGN KEY (VideoID) REFERENCES videometa(VideoID)
+);
