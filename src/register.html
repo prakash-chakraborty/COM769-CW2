@@ -71,7 +71,8 @@
                 $.ajax({
                     url: 'https://prod-75.eastus.logic.azure.com/workflows/e3c4809e5ee84f5dbcf5f6ad0ceab545/triggers/request/paths/invoke/rest/v1/user?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=R4rqivcN3sucmmazAoImXp216So5jsmk89JqfYj1wio', // Replace with your API endpoint for rating submission
                     type: "POST",
-                    data: userData,
+                    data: JSON.stringify(userData),
+                    contentType: "application/json",
                     success: function (response) {
                         alert("Registered with username: " + username);
                         window.location.href = "home.html"
