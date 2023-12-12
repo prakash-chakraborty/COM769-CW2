@@ -64,6 +64,7 @@
         $(document).ready(function() {
             // Handle file input change event
             $("#video").change(function() {
+                /*
                 // Get the selected file
                 var file = this.files[0];
 
@@ -88,6 +89,7 @@
                         alert("Error uploading video: " + error);
                     }
                 });
+                */
             });
 
             // Handle form submission (optional)
@@ -104,20 +106,20 @@
 
                 // Simulate video upload to Azure Blob Storage (replace with actual code)
                 // In a real implementation, you would use Azure SDK or library for this step
-                const videoUrl = "https://your-azure-blob-url.com/video.mp4";
+                const videoUrl = "https://vidplayer.azureedge.net/videos/sample-5s.mp4";
 
                 // Create an object to send to the API
                 const videoData = {
-                    title: title,
-                    publisher: publisher,
-                    producer: producer,
-                    genre: genre,
-                    ageRating: ageRating,
-                    videoUrl: videoUrl,
+                    Title: title,
+                    Publisher: publisher,
+                    Producer: producer,
+                    Genre: genre,
+                    AgeRating: ageRating,
+                    URL: videoUrl,
                 };
 
                 // Send the data to your API endpoint (replace 'apiEndpoint' with your actual API endpoint URL)
-                fetch('apiEndpoint', {
+                fetch('https://prod-20.eastus.logic.azure.com/workflows/12668f9e60d34a8fad2255423f70f8fa/triggers/request/paths/invoke/rest/v1/videometa?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=_RPtP4inkUcmYkd1n0TyKbL6_oGljg8kbqUWefEuxrg', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -128,6 +130,8 @@
                 .then(data => {
                     // Handle the API response here (e.g., show success message or error message)
                     console.log(data);
+                    alert("Video Uploaded");
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);

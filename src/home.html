@@ -34,7 +34,7 @@
         $(document).ready(function() {
             // Make a GET request to fetch video data from your API
             $.ajax({
-                url: "your_get_api_endpoint_here", // Replace with your API endpoint for fetching video data
+                url: "https://prod-60.eastus.logic.azure.com/workflows/3221eacb7e23479e88d7710f704270a5/triggers/request/paths/invoke/rest/v1/videometa?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=_GAcLtZZQUESYOHElMDsaE6pszmG0D3saSH2yMKarXU", // Replace with your API endpoint for fetching video data
                 type: "GET",
                 dataType: "json",
                 success: function(response) {
@@ -49,8 +49,8 @@
                         videoData.forEach(function(video) {
                             var videoElement = `
                                 <div class="cursor-pointer">
-                                    <img src="${video.thumbnail_url}" alt="${video.title}" class="w-full h-auto rounded-lg">
-                                    <p class="mt-2 text-center text-sm font-semibold">${video.title}</p>
+                                    <img src="${video.thumbnail_url}" alt="${video.Title}" class="w-full h-auto rounded-lg">
+                                    <p class="mt-2 text-center text-sm font-semibold">${video.Title}</p>
                                 </div>
                             `;
                             $("#video-list").append(videoElement);
@@ -58,7 +58,7 @@
                             // Add a click event handler to each video element
                             $(videoElement).click(function() {
                                 // Redirect to a new screen with the video ID as a parameter
-                                window.location.href = "videodetails.html?id=" + video.id;
+                                window.location.href = "videodetails.html?id=" + video.VideoID;
                             });
                         });
                     }
@@ -70,7 +70,7 @@
                     $("#search-input").on("input", function() {
                         var searchQuery = $(this).val().toLowerCase();
                         var filteredVideos = originalVideoData.filter(function(video) {
-                            return video.title.toLowerCase().includes(searchQuery);
+                            return video.Title.toLowerCase().includes(searchQuery);
                         });
                         renderVideos(filteredVideos);
                     });
