@@ -63,12 +63,12 @@
                 dataType: "json",
                 success: function (videoDetails) {
                     // Create and initialize the video player (replace the source with the actual video URL)
-                    /*
+                    
                     var videoPlayer = `
                         <iframe width="100%" height="100%" src="${videoDetails.Table1[0].URL}" frameborder="0" allowfullscreen></iframe>
                     `;
                     $("#video-player").html(videoPlayer);
-                    */
+                    
                     $("#video-title").text(videoDetails.Table1[0].Title) ;
                 },
                 error: function (error) {
