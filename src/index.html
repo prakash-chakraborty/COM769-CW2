@@ -73,11 +73,15 @@
                     data: JSON.stringify(userData),
                     contentType: "application/json",
                     success: function (response) {
-                        alert("Logged In! UserType" + data.UserType);
-                        if (data.UserType === "user") {
-                            window.location.href = "home.html"
+                        if (response.length == 0) {
+                            alert("Invalid Credentials");
                         } else {
-                            window.location.href = "upload.html"
+                            alert("Logged In! UserType" + data.UserType);
+                            if (data.Table1.UserType === "user") {
+                                window.location.href = "home.html"
+                            } else {
+                                window.location.href = "upload.html"
+                            }
                         }
                     },
                     error: function (error) {
