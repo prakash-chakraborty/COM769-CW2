@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-900 text-white">
 
     <!-- Header Section -->
@@ -16,7 +18,8 @@
 
     <!-- Search Bar Section -->
     <div class="container mx-auto mt-6 p-4">
-        <input id="search-input" type="text" class="w-full px-3 py-2 rounded-md bg-gray-800 text-white" placeholder="Search by Title...">
+        <input id="search-input" type="text" class="w-full px-3 py-2 rounded-md bg-gray-800 text-white"
+            placeholder="Search by Title...">
     </div>
 
     <!-- Video List Section -->
@@ -31,13 +34,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Make a GET request to fetch video data from your API
             $.ajax({
                 url: "https://prod-60.eastus.logic.azure.com/workflows/3221eacb7e23479e88d7710f704270a5/triggers/request/paths/invoke/rest/v1/videometa?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=_GAcLtZZQUESYOHElMDsaE6pszmG0D3saSH2yMKarXU", // Replace with your API endpoint for fetching video data
                 type: "GET",
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     // Store the original video data for searching
                     var originalVideoData = response;
 
@@ -46,40 +49,49 @@
                         $("#video-list").empty(); // Clear the existing video list
 
                         // Loop through the response data and create video elements
-                        videoData.forEach(function(video) {
+                        videoData.forEach(function (video) {
+                            var sampURL = "https://images.template.net/wp-content/uploads/2016/04/27134644/Sample-Youtube-Thumbnail-Free-Download.jpg"
+                            //video.thumbnail_url
                             var videoElement = `
-                                <div class="cursor-pointer">
-                                    <img src="${video.thumbnail_url}" alt="${video.Title}" class="w-full h-auto rounded-lg">
+                                <div class="cursor-pointer videoTile" id="${video.VideoID}">
+                                    <img src="${sampURL}" alt="${video.Title}" class="w-full h-auto rounded-lg">
                                     <p class="mt-2 text-center text-sm font-semibold">${video.Title}</p>
                                 </div>
                             `;
-                            $("#video-list").append(videoElement);
+
 
                             // Add a click event handler to each video element
-                            $(videoElement).click(function() {
-                                // Redirect to a new screen with the video ID as a parameter
-                                window.location.href = "videodetails.html?id=" + video.VideoID;
-                            });
+                            // $(videoElement).click(function() {
+                            //     // Redirect to a new screen with the video ID as a parameter
+                            //     window.location.href = "videodetails.html?id=" + video.VideoID;
+                            // });
+
+                            $("#video-list").append(videoElement);
                         });
                     }
 
+
                     // Initial rendering of videos
                     renderVideos(originalVideoData);
-
+                    $(".videoTile").click(function () {
+                        window.location.href = "videodetails.html?id=" + this.id;
+                    });
                     // Handle search input changes
-                    $("#search-input").on("input", function() {
+                    $("#search-input").on("input", function () {
                         var searchQuery = $(this).val().toLowerCase();
-                        var filteredVideos = originalVideoData.filter(function(video) {
+                        var filteredVideos = originalVideoData.filter(function (video) {
                             return video.Title.toLowerCase().includes(searchQuery);
                         });
                         renderVideos(filteredVideos);
                     });
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error("Error fetching video data: " + error);
                 }
             });
+
         });
     </script>
 </body>
+
 </html>
