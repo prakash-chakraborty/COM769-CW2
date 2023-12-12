@@ -68,25 +68,18 @@
                     Password: password
                 };
 
-                // Make an API call here to validate the username and password
-                // Example: You can use jQuery.ajax or fetch API to send a POST request to your server
-                fetch('https://prod-75.eastus.logic.azure.com/workflows/e3c4809e5ee84f5dbcf5f6ad0ceab545/triggers/request/paths/invoke/rest/v1/user?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=R4rqivcN3sucmmazAoImXp216So5jsmk89JqfYj1wio', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(userData),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the API response here (e.g., check if login was successful or display an error message)
-                        console.log(data);
+                $.ajax({
+                    url: 'https://prod-75.eastus.logic.azure.com/workflows/e3c4809e5ee84f5dbcf5f6ad0ceab545/triggers/request/paths/invoke/rest/v1/user?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=R4rqivcN3sucmmazAoImXp216So5jsmk89JqfYj1wio', // Replace with your API endpoint for rating submission
+                    type: "POST",
+                    data: userData,
+                    success: function (response) {
                         alert("Registered with username: " + username);
                         window.location.href = "home.html"
-                    })
-                    .catch(error => {
+                    },
+                    error: function (error) {
                         console.error('Error:', error);
-                    });
+                    }
+                });
             });
         });
     </script>
