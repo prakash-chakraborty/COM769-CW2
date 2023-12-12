@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vid Player - Home</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Header Section -->
+    <header class="bg-black p-4">
+        <h1 class="text-2xl font-semibold">Vid Player</h1>
+    </header>
+
+    <!-- Search Bar Section -->
+    <div class="container mx-auto mt-6 p-4">
+        <input id="search-input" type="text" class="w-full px-3 py-2 rounded-md bg-gray-800 text-white" placeholder="Search by Title...">
+    </div>
+
+    <!-- Video List Section -->
+    <div class="container mx-auto mt-2 p-4">
+        <h2 class="text-xl font-semibold mb-4">Browse Videos</h2>
+        <div id="video-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <!-- Videos will be dynamically added here using jQuery -->
+        </div>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Make a GET request to fetch video data from your API
+            $.ajax({
+                url: "your_get_api_endpoint_here", // Replace with your API endpoint for fetching video data
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    // Store the original video data for searching
+                    var originalVideoData = response;
+
+                    // Function to render video elements based on search results
+                    function renderVideos(videoData) {
+                        $("#video-list").empty(); // Clear the existing video list
+
+                        // Loop through the response data and create video elements
+                        videoData.forEach(function(video) {
+                            var videoElement = `
+                                <div class="cursor-pointer">
+                                    <img src="${video.thumbnail_url}" alt="${video.title}" class="w-full h-auto rounded-lg">
+                                    <p class="mt-2 text-center text-sm font-semibold">${video.title}</p>
+                                </div>
+                            `;
+                            $("#video-list").append(videoElement);
+
+                            // Add a click event handler to each video element
+                            $(videoElement).click(function() {
+                                // Redirect to a new screen with the video ID as a parameter
+                                window.location.href = "videodetails.html?id=" + video.id;
+                            });
+                        });
+                    }
+
+                    // Initial rendering of videos
+                    renderVideos(originalVideoData);
+
+                    // Handle search input changes
+                    $("#search-input").on("input", function() {
+                        var searchQuery = $(this).val().toLowerCase();
+                        var filteredVideos = originalVideoData.filter(function(video) {
+                            return video.title.toLowerCase().includes(searchQuery);
+                        });
+                        renderVideos(filteredVideos);
+                    });
+                },
+                error: function(error) {
+                    console.error("Error fetching video data: " + error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

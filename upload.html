@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone - Video Upload</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex justify-center items-center h-screen">
+
+    <div class="max-w-md w-full p-6 rounded-lg bg-gray-800">
+        <h1 class="text-2xl font-semibold mb-4">Upload a Video</h1>
+        
+        <!-- Video Upload Form -->
+        <form id="upload-form">
+            <div class="mb-4">
+                <label for="video" class="block text-sm font-medium mb-2">Select Video File</label>
+                <input type="file" id="video" name="video" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" accept="video/*" required>
+            </div>
+            <div class="mb-4">
+                <label for="title" class="block text-sm font-medium mb-2">Title</label>
+                <input type="text" id="title" name="title" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+            </div>
+            <div class="mb-4">
+                <label for="publisher" class="block text-sm font-medium mb-2">Publisher</label>
+                <input type="text" id="publisher" name="publisher" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+            </div>
+            <div class="mb-4">
+                <label for="author" class="block text-sm font-medium mb-2">Author</label>
+                <input type="text" id="author" name="author" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+            </div>
+            <div class="mb-4">
+                <label for="genre" class="block text-sm font-medium mb-2">Genre</label>
+                <select id="genre" name="genre" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                    <option value="action">Action</option>
+                    <option value="drama">Drama</option>
+                    <option value="comedy">Comedy</option>
+                    <!-- Add more genres as needed -->
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="ageRating" class="block text-sm font-medium mb-2">Age Rating</label>
+                <select id="ageRating" name="ageRating" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white" required>
+                    <option value="G">G - General Audiences</option>
+                    <option value="PG">PG - Parental Guidance Suggested</option>
+                    <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
+                    <option value="R">R (Restricted)</option>
+                    <!-- Add more age ratings as needed -->
+                </select>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">Submit</button>
+        </form>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Handle file input change event
+            $("#video").change(function() {
+                // Get the selected file
+                var file = this.files[0];
+
+                // Create a FormData object and append the file to it
+                var formData = new FormData();
+                formData.append("video", file);
+
+                // Make an API call to upload the file
+                $.ajax({
+                    url: "your_upload_api_endpoint_here", // Replace with your API endpoint
+                    type: "POST",
+                    data: formData,
+                    processData: false, // Prevent jQuery from processing data
+                    contentType: false, // Prevent jQuery from setting content type
+                    success: function(response) {
+                        // Handle success response from the API
+                        alert("Video uploaded successfully!");
+                        // You can redirect to another page or perform any other actions here
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response from the API
+                        alert("Error uploading video: " + error);
+                    }
+                });
+            });
+
+            // Handle form submission (optional)
+            $("#upload-form").submit(function(event) {
+                // Handle other form fields if needed
+                event.preventDefault();
+
+                // Retrieve form data
+                const title = document.getElementById("title").value;
+                const publisher = document.getElementById("publisher").value;
+                const author = document.getElementById("author").value;
+                const genre = document.getElementById("genre").value;
+                const ageRating = document.getElementById("ageRating").value;
+
+                // Simulate video upload to Azure Blob Storage (replace with actual code)
+                // In a real implementation, you would use Azure SDK or library for this step
+                const videoUrl = "https://your-azure-blob-url.com/video.mp4";
+
+                // Create an object to send to the API
+                const videoData = {
+                    title: title,
+                    publisher: publisher,
+                    author: author,
+                    genre: genre,
+                    ageRating: ageRating,
+                    videoUrl: videoUrl,
+                };
+
+                // Send the data to your API endpoint (replace 'apiEndpoint' with your actual API endpoint URL)
+                fetch('apiEndpoint', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(videoData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the API response here (e.g., show success message or error message)
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

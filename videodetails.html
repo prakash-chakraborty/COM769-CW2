@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vid Player - Video Details</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900 text-white">
+
+    <!-- Header Section -->
+    <header class="bg-black p-4">
+        <h1 class="text-2xl font-semibold">Vid Player</h1>
+    </header>
+
+    <!-- Video Player and Details Section -->
+    <div class="container mx-auto mt-6 p-4">
+        <h2 class="text-2xl font-semibold mb-2">Video Title</h2>
+        <div id="video-player" class="w-full h-0 relative" style="padding-bottom: 56.25%;">
+            <!-- Video player iframe will be inserted here -->
+        </div>
+        <div class="mt-4">
+            <!-- 5-Star Rating System -->
+            <p class="text-lg font-semibold mb-2">Rate this video:</p>
+            <div class="flex">
+                <span id="star1" class="star cursor-pointer text-yellow-400 text-2xl">&#9733;</span>
+                <span id="star2" class="star cursor-pointer text-yellow-400 text-2xl">&#9733;</span>
+                <span id="star3" class="star cursor-pointer text-yellow-400 text-2xl">&#9733;</span>
+                <span id="star4" class="star cursor-pointer text-yellow-400 text-2xl">&#9733;</span>
+                <span id="star5" class="star cursor-pointer text-yellow-400 text-2xl">&#9733;</span>
+            </div>
+        </div>
+        <div class="mt-6">
+            <!-- Comment Box and Submit Button -->
+            <textarea id="comment-input" class="w-full px-3 py-2 rounded-md bg-gray-800 text-white" placeholder="Write a comment..."></textarea>
+            <button id="submit-comment" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">Submit Comment</button>
+        </div>
+        <div class="mt-6">
+            <!-- Comments Section -->
+            <h3 class="text-xl font-semibold mb-2">Comments</h3>
+            <ul id="comments-list">
+                <!-- Comments will be loaded dynamically using jQuery -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Get the video ID from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var videoId = urlParams.get("id");
+
+            // Initialize the video player
+            $.ajax({
+                url: "your_video_api_endpoint?id=" + videoId, // Replace with your API endpoint for getting video details
+                type: "GET",
+                dataType: "json",
+                success: function (videoDetails) {
+                    // Create and initialize the video player (replace the source with the actual video URL)
+                    var videoPlayer = `
+                        <iframe width="100%" height="100%" src="${videoDetails.video_url}" frameborder="0" allowfullscreen></iframe>
+                    `;
+                    $("#video-player").html(videoPlayer);
+                },
+                error: function (error) {
+                    console.error("Error fetching video details: " + error);
+                }
+            });
+
+            // Fetch and display the video rating on page load
+            $.ajax({
+                url: "your_rating_api_endpoint?id=" + videoId, // Replace with your API endpoint for getting video rating
+                type: "GET",
+                dataType: "json",
+                success: function (ratingData) {
+                    // Update the star rating system based on the fetched rating
+                    updateStarRating(ratingData.rating);
+                },
+                error: function (error) {
+                    console.error("Error fetching video rating: " + error);
+                }
+            });
+
+            // Fetch and display comments on page load
+            $.ajax({
+                url: "your_comments_api_endpoint?id=" + videoId, // Replace with your API endpoint for getting comments
+                type: "GET",
+                dataType: "json",
+                success: function (commentsData) {
+                    // Render comments
+                    renderComments(commentsData);
+                },
+                error: function (error) {
+                    console.error("Error fetching comments: " + error);
+                }
+            });
+
+            // Initialize the star rating system
+            $(".star").click(function () {
+                var rating = $(this).index() + 1; // Get the selected star's index and add 1 to get the rating value
+
+                // Make an API call to submit the rating
+                $.ajax({
+                    url: "your_rating_api_endpoint", // Replace with your API endpoint for rating submission
+                    type: "POST",
+                    data: {
+                        video_id: videoId,
+                        rating: rating
+                    },
+                    success: function (response) {
+                        // Handle success response
+                        alert("Rating submitted successfully!");
+
+                        // Update the star colors based on the selected rating
+                        updateStarRating(rating);
+                    },
+                    error: function (error) {
+                        console.error("Error submitting rating: " + error);
+                    }
+                });
+            });
+
+            // Handle "Submit Comment" button click
+            $("#submit-comment").click(function () {
+                var comment = $("#comment-input").val();
+
+                // Make an API call to submit the comment
+                $.ajax({
+                    url: "your_comment_api_endpoint", // Replace with your API endpoint for submitting comments
+                    type: "POST",
+                    data: {
+                        video_id: videoId,
+                        comment: comment
+                    },
+                    success: function (response) {
+                        // Handle success response
+                        alert("Comment submitted successfully!");
+
+                        // Clear the comment input field
+                        $("#comment-input").val("");
+
+                        // Fetch and display updated comments
+                        $.ajax({
+                            url: "your_comments_api_endpoint?id=" + videoId, // Replace with your API endpoint for getting comments
+                            type: "GET",
+                            dataType: "json",
+                            success: function (updatedCommentsData) {
+                                // Render updated comments
+                                renderComments(updatedCommentsData);
+                            },
+                            error: function (error) {
+                                console.error("Error fetching updated comments: " + error);
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Error submitting comment: " + error);
+                    }
+                });
+            });
+
+            // Function to render comments
+            function renderComments(commentsData) {
+                var commentsList = $("#comments-list");
+                commentsList.empty();
+
+                commentsData.forEach(function (comment) {
+                    var commentItem = `
+                        <li class="mb-2">
+                            <p class="text-lg font-semibold">${comment.username}:</p>
+                            <p class="text-gray-400">${comment.comment}</p>
+                        </li>
+                    `;
+                    commentsList.append(commentItem);
+                });
+            }
+
+            // Function to update the star rating system
+            function updateStarRating(rating) {
+                $(".star").removeClass("text-yellow-400");
+
+                for (var i = 1; i <= rating; i++) {
+                    $("#star" + i).addClass("text-yellow-400");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
