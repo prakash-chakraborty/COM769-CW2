@@ -188,15 +188,22 @@
                 var commentsList = $("#comments-list");
                 commentsList.empty();
                 var users = ["Alex","richard.hammond","courtney.87","rajesh007"];
-                commentsData.forEach(function (comment) {
-                    var nameText = users[Math.floor(Math.random() * 3)];
+                for (let index = 0; index < commentsData.length; index++) {
+                    
+                    var nameText = users[index];
+                    if(index==0){
+                        nameText = "prakash"
+                    }
                     var commentItem = `
                         <li class="mb-2">
                             <p class="text-lg font-semibold">${nameText}</p>
-                            <p class="text-gray-400">${comment.CommentText}</p>
+                            <p class="text-gray-400">${commentsData[index].CommentText}</p>
                         </li>
                     `;
                     commentsList.append(commentItem);
+                }
+                commentsData.forEach(function (comment) {
+                    
                 });
             }
 
