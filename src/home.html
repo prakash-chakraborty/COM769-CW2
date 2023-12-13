@@ -50,11 +50,11 @@
 
                         // Loop through the response data and create video elements
                         videoData.forEach(function (video) {
-                            var sampURL = "https://images.template.net/wp-content/uploads/2016/04/27134644/Sample-Youtube-Thumbnail-Free-Download.jpg"
-                            //video.thumbnail_url
+                            //var sampURL = "https://images.template.net/wp-content/uploads/2016/04/27134644/Sample-Youtube-Thumbnail-Free-Download.jpg"
+                            var thumbnail_url = "https://vidplayer.blob.core.windows.net/test/"+ video.VideoID +".png";
                             var videoElement = `
                                 <div class="cursor-pointer videoTile" id="${video.VideoID}">
-                                    <img src="${sampURL}" alt="${video.Title}" class="w-full h-auto rounded-lg">
+                                    <img src="${thumbnail_url}" alt="${video.Title}" class="w-full h-auto rounded-lg">
                                     <p class="mt-2 text-center text-sm font-semibold">${video.Title}</p>
                                 </div>
                             `;

@@ -187,12 +187,12 @@
             function renderComments(commentsData) {
                 var commentsList = $("#comments-list");
                 commentsList.empty();
-
+                var users = ["Alex","richard.hammond","courtney.87","rajesh007"];
                 commentsData.forEach(function (comment) {
-                    users = ["Alex","richard.hammond","courtney.87","rajesh007"]
+                    var nameText = users[Math.floor(Math.random() * 3)];
                     var commentItem = `
                         <li class="mb-2">
-                            <p class="text-lg font-semibold"${users[comment.CommentID-1]}></p>
+                            <p class="text-lg font-semibold">${nameText}</p>
                             <p class="text-gray-400">${comment.CommentText}</p>
                         </li>
                     `;
