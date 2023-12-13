@@ -189,9 +189,10 @@
                 commentsList.empty();
 
                 commentsData.forEach(function (comment) {
+                    users = ["Alex","richard.hammond","courtney.87","rajesh007"]
                     var commentItem = `
                         <li class="mb-2">
-                            <p class="text-lg font-semibold">prakash:</p>
+                            <p class="text-lg font-semibold"${users[comment.CommentID-1]}></p>
                             <p class="text-gray-400">${comment.CommentText}</p>
                         </li>
                     `;
