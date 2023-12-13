@@ -83,6 +83,9 @@
                             return video.Title.toLowerCase().includes(searchQuery);
                         });
                         renderVideos(filteredVideos);
+                        $(".videoTile").click(function () {
+                        window.location.href = "videodetails.html?id=" + this.id;
+                    });
                     });
                 },
                 error: function (error) {

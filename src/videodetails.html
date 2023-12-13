@@ -18,8 +18,8 @@
 
     <!-- Video Player and Details Section -->
     <div class="container mx-auto mt-6 p-4">
-        <h2 id ="video-title" class="text-2xl font-semibold mb-2">Video Title</h2>
-        <div id="video-player" class="w-full h-screen relative" >
+        <h2 id="video-title" class="text-2xl font-semibold mb-2">Video Title</h2>
+        <div id="video-player" class="w-full h-screen relative">
             <!-- Video player iframe will be inserted here -->
         </div>
         <div class="mt-4">
@@ -35,8 +35,11 @@
         </div>
         <div class="mt-6">
             <!-- Comment Box and Submit Button -->
-            <textarea id="comment-input" class="w-full px-3 py-2 rounded-md bg-gray-800 text-white" placeholder="Write a comment..."></textarea>
-            <button id="submit-comment" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">Submit Comment</button>
+            <textarea id="comment-input" class="w-full px-3 py-2 rounded-md bg-gray-800 text-white"
+                placeholder="Write a comment..."></textarea>
+            <button id="submit-comment"
+                class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">Submit
+                Comment</button>
         </div>
         <div class="mt-6">
             <!-- Comments Section -->
@@ -58,18 +61,18 @@
 
             // Initialize the video player
             $.ajax({
-                url: "https://prod-36.eastus.logic.azure.com/workflows/a6a394aaae7d416d9a6450a4f3c1e728/triggers/request/paths/invoke/rest/v1/videometa/"+videoId+"?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=sk7wWL3NPf6_3IgNUo6rWUw8LE-QtctfsNuFdk6sK5E", // Replace with your API endpoint for getting video details
+                url: "https://prod-36.eastus.logic.azure.com/workflows/a6a394aaae7d416d9a6450a4f3c1e728/triggers/request/paths/invoke/rest/v1/videometa/" + videoId + "?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=sk7wWL3NPf6_3IgNUo6rWUw8LE-QtctfsNuFdk6sK5E", // Replace with your API endpoint for getting video details
                 type: "GET",
                 dataType: "json",
                 success: function (videoDetails) {
                     // Create and initialize the video player (replace the source with the actual video URL)
-                    
+
                     var videoPlayer = `
                         <iframe width="100%" height="100%" src="${videoDetails.Table1[0].URL}" frameborder="0" allowfullscreen></iframe>
                     `;
                     $("#video-player").html(videoPlayer);
-                    
-                    $("#video-title").text(videoDetails.Table1[0].Title) ;
+
+                    $("#video-title").text(videoDetails.Table1[0].Title);
                 },
                 error: function (error) {
                     console.error("Error fetching video details: " + error);
@@ -78,7 +81,7 @@
 
             // Fetch and display the video rating on page load
             $.ajax({
-                url: "https://prod-07.eastus.logic.azure.com/workflows/2df6fb4c53284c738e7f4598742557c6/triggers/request/paths/invoke/rest/v1/ratings/"+videoId+"?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=9Ag1eb6aj_N9RJTUjW9umBVbjJ26s_9Rt1KO5HDVL68", // Replace with your API endpoint for getting video rating
+                url: "https://prod-07.eastus.logic.azure.com/workflows/2df6fb4c53284c738e7f4598742557c6/triggers/request/paths/invoke/rest/v1/ratings/" + videoId + "?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=9Ag1eb6aj_N9RJTUjW9umBVbjJ26s_9Rt1KO5HDVL68", // Replace with your API endpoint for getting video rating
                 type: "GET",
                 dataType: "json",
                 success: function (ratingData) {
@@ -86,9 +89,9 @@
                     try {
                         updateStarRating(ratingData.Table1[0].Rating);
                     } catch (error) {
-                        
+
                     }
-                    
+
                 },
                 error: function (error) {
                     console.error("Error fetching video rating: " + error);
@@ -97,7 +100,7 @@
 
             // Fetch and display comments on page load
             $.ajax({
-                url: "https://prod-47.eastus.logic.azure.com/workflows/6944fc43b5ac489083992e403edd7925/triggers/request/paths/invoke/assets/comments/"+videoId+"?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=JIdQjpbFjzhPhu0p0zjf_xqe33W9by01ovjhM2vJfB8", // Replace with your API endpoint for getting comments
+                url: "https://prod-47.eastus.logic.azure.com/workflows/6944fc43b5ac489083992e403edd7925/triggers/request/paths/invoke/assets/comments/" + videoId + "?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=JIdQjpbFjzhPhu0p0zjf_xqe33W9by01ovjhM2vJfB8", // Replace with your API endpoint for getting comments
                 type: "GET",
                 dataType: "json",
                 success: function (commentsData) {
@@ -105,9 +108,9 @@
                     try {
                         renderComments(commentsData.Table1);
                     } catch (error) {
-                        
+
                     }
-                    
+
                 },
                 error: function (error) {
                     console.error("Error fetching comments: " + error);
@@ -118,9 +121,9 @@
             $(".star").click(function () {
                 var rating = $(this).index() + 1; // Get the selected star's index and add 1 to get the rating value
                 var ratingData = {
-                        VideoID: videoId,
-                        Rating: rating
-                    };
+                    VideoID: videoId,
+                    Rating: rating
+                };
                 // Make an API call to submit the rating
                 $.ajax({
                     url: "https://prod-18.eastus.logic.azure.com/workflows/a51367ea4fce4efcaeb89acfaff02b92/triggers/request/paths/invoke/rest/v1/ratings?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=DCUhMSj5n_KyZpTmZdzGVeC57WKMeY6YkiVJqIFfinI", // Replace with your API endpoint for rating submission
@@ -129,7 +132,7 @@
                     contentType: "application/json",
                     success: function (response) {
                         // Handle success response
-                        alert("Rating submitted successfully!");
+                        //alert("Rating submitted successfully!");
 
                         // Update the star colors based on the selected rating
                         updateStarRating(rating.Table1[0].Rating);
@@ -144,9 +147,9 @@
             $("#submit-comment").click(function () {
                 var comment = $("#comment-input").val();
                 commentData = {
-                        VideoID: videoId,
-                        Comment: comment
-                    };
+                    VideoID: videoId,
+                    Comment: comment
+                };
                 // Make an API call to submit the comment
                 $.ajax({
                     url: "https://prod-95.eastus.logic.azure.com/workflows/b6f6b5e6834d4a86a33413c081bb26a7/triggers/manual/paths/invoke/rest/v1/comments?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=svSTAc91hEFK416he45sNsBUvP1iqrBoP9X_yZfEDj0", // Replace with your API endpoint for submitting comments
@@ -155,14 +158,14 @@
                     contentType: "application/json",
                     success: function (response) {
                         // Handle success response
-                        alert("Comment submitted successfully!");
+                        //alert("Comment submitted successfully!");
 
                         // Clear the comment input field
                         $("#comment-input").val("");
 
                         // Fetch and display updated comments
                         $.ajax({
-                            url: "https://prod-47.eastus.logic.azure.com/workflows/6944fc43b5ac489083992e403edd7925/triggers/request/paths/invoke/assets/comments/"+videoId+"?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=JIdQjpbFjzhPhu0p0zjf_xqe33W9by01ovjhM2vJfB8", // Replace with your API endpoint for getting comments
+                            url: "https://prod-47.eastus.logic.azure.com/workflows/6944fc43b5ac489083992e403edd7925/triggers/request/paths/invoke/assets/comments/" + videoId + "?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=JIdQjpbFjzhPhu0p0zjf_xqe33W9by01ovjhM2vJfB8", // Replace with your API endpoint for getting comments
                             type: "GET",
                             dataType: "json",
                             success: function (updatedCommentsData) {
